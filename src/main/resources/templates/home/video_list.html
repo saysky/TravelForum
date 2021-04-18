@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div th:replace="home/module/_header"></div>
+
+    <main id="tt-pageContent" data-page="1" data-type="new" class="tt-offset-small" style="padding-top: 0px;">
+        <div class="container">
+            <div class="tt-tab-wrapper">
+                <div class="tt-wrapper-inner">
+                    <ul class="nav nav-tabs pt-tabs-default">
+                        <li class="nav-item"><a class="nav-link" th:classappend="${sort == 'id' ? 'active' : ''}" href="?sort=id"><span>最新发布</span></a></li>
+                        <li class="nav-item"><a class="nav-link" th:classappend="${sort == 'postViews' ? 'active' : ''}" href="?sort=videoViews"><span>点击数最多</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="tab-content" style="margin:30px;">
+                    <div class="tab-pane tt-indent-none show active" id="tt-tab-01" role="tabpanel">
+                        <div class="tt-categories-list">
+                            <div class="row" id="item-wrapper">
+                                <div class="col-md-3 col-lg-3 item"  th:each="item : ${page.records}">
+
+                                    <div class="tt-item" style="padding: 10px;">
+                                        <div class="tt-item-layout">
+                                            <div class="innerwrapper"
+                                                 style="position: relative;overflow: hidden;text-align: center;">
+                                                <a th:href="${'/video/'+item.id}">
+                                                    <img th:src="${item.imgUrl}" alt=""
+                                                         class="post-thumbnail">
+                                                </a>
+                                            </div>
+                                            <div class="innerwrapper">
+                                                <a th:href="${'/video/'+item.id}">[[${item.title}]] </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div th:replace="home/module/_page"></div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="home/module/_footer"></div>

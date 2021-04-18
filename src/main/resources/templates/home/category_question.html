@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div th:replace="home/module/_header"></div>
+
+    <main id="tt-pageContent" data-page="1" data-type="category" th:data-id="${category.id}" class="tt-offset-small">
+        <div class="tt-wrapper-section">
+            <div class="container">
+                <div class="tt-user-header">
+                    <div class="tt-col-title">
+                        <div class="tt-title">
+                            帖子分类-[[${category.cateName}]]
+                        </div>
+                        <ul class="tt-list-badge">
+                            <li>[[${category.cateDesc}]]</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="tt-tab-wrapper">
+                    <div class="tt-topic-list">
+                        <div class="tt-list-header">
+                            <div class="tt-col-topic">标题</div>
+                            <div class="tt-col-category">板块</div>
+                            <div class="tt-col-value-large hide-mobile">回帖数</div>
+                            <div class="tt-col-value-large hide-mobile">收藏数</div>
+                            <div class="tt-col-value-large hide-mobile">发布时间</div>
+                        </div>
+                        <div class="tt-item" th:each="question : ${questions}">
+                            <div class="tt-col-avatar">
+                                <a th:href="'/user/'+${question.userId}">
+                                    <img th:src="${question.user.userAvatar}" class="avatar" alt="">
+                                </a>
+                            </div>
+                            <div class="tt-col-description">
+                                <h6 class="tt-title">
+                                    <a th:href="'/question/'+${question.id}"
+                                       target="_blank">[[${question.title}]]</a>
+                                </h6>
+                                <div class="tt-col-message">
+                                    [[${question.summary}]]
+                                </div>
+                            </div>
+                            <div class="tt-col-category">
+                                <a th:if= "${question.category != null}" th:href="'/category/'+${question.category.id}"><span
+                                        th:class="'tt-color0'+${question.category.cateSort%9+1}+' tt-badge'">[[${question.category.cateName}]]</span>
+                                </a>
+                            </div>
+                            <div class="tt-col-category tt-col-value-large hide-mobile">
+                                [[${question.answerCount}]]
+                            </div>
+                            <div class="tt-col-value-large hide-mobile">
+                                [[${question.markCount}]]
+                            </div>
+                            <div class="tt-col-value-large hide-mobile">
+                                [[${question.createTimeStr}]]
+                            </div>
+                        </div>
+                    </div>
+                    <div th:replace="home/module/_page"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <div th:replace="home/module/_footer"></div>

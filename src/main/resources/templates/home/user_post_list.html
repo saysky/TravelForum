@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div th:replace="home/module/_header"></div>
+
+    <main id="tt-pageContent" data-page="1" data-type="user" th:data-id="${user.id}" class="tt-offset-small">
+        <div class="tt-wrapper-section">
+            <div class="container">
+                <div class="tt-user-header">
+                    <div class="tt-col-avatar">
+                        <div class="tt-icon">
+                            <img th:src="${user.userAvatar}" class="avatar" alt="">
+                        </div>
+                    </div>
+                    <div class="tt-col-title">
+                        <div class="tt-title">
+                            <a href="#">[[${user.userDisplayName}]]</a>
+                        </div>
+                        <ul class="tt-list-badge">
+                            <li>[[${user.userDesc}]]</li>
+                            <li class="follow-box">
+                                <a href="javascript:void(0)" th:style="${followFlag == 'Y' ? 'display: none' : 'display:block'}" class="follow-btn" th:data-id="${user.id}"><span class="tt-color03 tt-badge">关注Ta</span></a>
+                                <a href="javascript:void(0)" th:style="${followFlag == 'N' ? 'display: none' : 'display:block'}" class="unfollow-btn" th:data-id="${user.id}"><span class="tt-color08 tt-badge">取消关注</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="tt-tab-wrapper">
+                    <div class="tt-wrapper-inner">
+                        <ul class="nav nav-tabs pt-tabs-default" role="tablist">
+                            <li class="nav-item show">
+                                <a class="nav-link" th:href="${'/user/'+user.id+'/question'}"><span>帖子列表</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" th:href="${'/user/'+user.id+'/post'}"><span>文章列表</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane tt-indent-none active" role="tabpanel">
+                            <div class="tt-topic-list">
+                                <div class="tt-list-header">
+                                    <div class="tt-col-topic">标题</div>
+                                    <div class="tt-col-category">分类</div>
+                                    <div class="tt-col-value hide-mobile">点赞数</div>
+                                    <div class="tt-col-value hide-mobile">回帖数</div>
+                                    <div class="tt-col-value hide-mobile">点击数</div>
+                                    <div class="tt-col-value">发布</div>
+                                </div>
+                                <div id="tt-item-wrapper" data-type="user">
+                                    <div class="tt-item" th:each="post : ${posts}">
+                                        <div class="tt-col-avatar">
+                                            <a th:href="'/user/'+${post.userId}">
+                                                <img th:src="${post.user.userAvatar}" class="avatar" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="tt-col-description">
+                                            <h6 class="tt-title"><a th:href="'/post/'+${post.id}">
+                                                [[${post.postTitle}]]
+                                            </a></h6>
+                                            <div class="row align-items-center no-gutters">
+                                                <div class="col-11">
+                                                </div>
+                                                <div class="col-1 ml-auto show-mobile">
+                                                    <div class="tt-value">[[${post.createTimeStr}]]</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tt-col-category"><a th:href="'/category/'+${post?.category?.id}"><span
+                                                th:class="'tt-color0'+${post?.category?.cateSort%9+1}+' tt-badge'">[[${post?.category?.cateName}]]</span></a>
+                                        </div>
+                                        <div class="tt-col-value  hide-mobile">[[${post.postLikes}]]</div>
+                                        <div class="tt-col-value tt-color-select  hide-mobile">[[${post.commentSize}]]</div>
+                                        <div class="tt-col-value  hide-mobile">[[${post.postViews}]]</div>
+                                        <div class="tt-col-value hide-mobile">[[${post.createTimeStr}]]</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div th:replace="home/module/_page"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </main>
+
+
+    <div th:replace="home/module/_footer"></div>

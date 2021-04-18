@@ -1,0 +1,158 @@
+<div th:replace="admin/module/_header"></div>
+<div class="wrapper">
+    <!-- 菜单栏模块 -->
+    <div th:replace="admin/module/_sidebar"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+        <style type="text/css">
+            #title {
+                font-weight: 400;
+                border-radius: 0;
+            }
+
+            #cateId option {
+                border-radius: 0;
+            }
+
+            #tags {
+                border-radius: 0;
+            }
+
+            .form-horizontal .control-label {
+                text-align: left;
+            }
+
+            .editor-preview-active img, .editor-preview-active-side img {
+                width: 100%;
+            }
+
+            .fr-toolbar {
+                border-top: 1px solid #ccc !important;
+            }
+
+            .fr-wrapper > div[style*='z-index: 9999'] {
+                position: absolute;
+                top: -10000px;
+                opacity: 0;
+                height: 0;
+            }
+        </style>
+        <section class="content-header">
+            <h1 style="display: inline-block;">帖子修改</h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a data-pjax="true" href="#"><i
+                            class="fa fa-dashboard"></i> 首页</a>
+                </li>
+                <li>
+                    <a data-pjax="true" href="/admin/question">帖子管理</a>
+                </li>
+                <li class="active">帖子修改</li>
+            </ol>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                        <!-- form start -->
+                        <form role="form">
+                            <input type="hidden" id="questionId" th:value="${question.id}">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-lg" id="title" placeholder="请输入标题" th:value="${question.title}">
+                                </div>
+                                <div class="form-group" id='edit' th:utext="${question.content}"></div>
+                                <div class="form-group">
+                                    <select class="form-control  input-lg" id="cateId">
+                                        <option th:each="c : ${categories}" th:value="${c.id}" th:selected="${question.category.id == c.id}">[[${c.cateName}]]</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+
+                            <div class="box-footer">
+                                <button type="button" class="btn btn-primary" onclick="save()">发布</button>
+                                <a class="btn btn-info" href="/admin/question">返回</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <script>
+
+
+            //页面加载完成后再执行
+            $(function () {
+                $('#edit').froalaEditor({
+                    heightMin: 500,
+                    heightMax: 1000,
+                    placeholderText: '请详细描述你的帖子...',
+                    pastePlain: true,
+                    theme: 'gray',
+                    fontFamilySelection: true,
+                    fontSizeSelection: true,
+                    paragraphFormatSelection: true,
+                    toolbarButtons: ['paragraphFormat', 'bold', 'italic', 'underline', 'strikeThrough', 'quote', 'insertLink', 'emoticons', 'insertImage', 'insertVideo', 'embedly', 'insertFile', 'insertTable',
+                        'align', 'formatOL', 'formatUL', 'fullscreen', '-', 'fontFamily', 'fontSize', 'color', 'outdent', 'indent', 'specialCharacters', 'insertHR', 'clearFormatting',
+                        'print', 'spellChecker', 'undo', 'redo', 'help', 'html',],
+                    imageAllowedTypes: ['jpg', 'gif', 'png', 'jpeg', 'svg', 'psd'],
+                    imageDefaultWidth: 100,
+                    imageInsertButtons: ['imageBack', '|', 'imageUpload', 'imageByURL'],
+                    imageUploadURL: '/admin/file/upload',
+                    imageManagerLoadURL: '/admin/file/upload',
+                    imageManagerLoadMethod: "GET",
+                    imageManagerPageSize: 4,
+                    imageManagerScrollOffset: 20,
+                    fileUploadURL: '/admin/file/upload',
+                    videoUploadURL: '/admin/file/upload',
+                    imagePaste: true,
+                    imageMove: true,
+                    pastePlain: true,
+                    toolbarStickyOffset: 50,
+                    tableResizer: true,
+                    fileMaxSize: 1024 * 1024 * 2000,
+                    videoMaxSize: 1024 * 1024 * 2000,
+                    language: 'zh_cn'
+                });
+
+            });
+
+            /**
+             * 提交帖子
+             * @param status 帖子状态
+             */
+            function save() {
+                var id = $('#questionId').val();
+                var title = $('#title').val();
+                var content = $("#edit").froalaEditor('html.get');
+                if (title == null || title == '') {
+                    showMsg("请输入帖子标题", "info", 2000);
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/question/save',
+                    async: false,
+                    data: {
+                        'id': id,
+                        'title': title,
+                        'content': content
+                    },
+                    success: function (data) {
+                        if (data.code == 1) {
+                            showMsgAndRedirect("发布成功", "success", 1000, "/admin/question");
+                        } else {
+                            showMsg(data.msg, "success", 2000);
+                        }
+                    }
+                });
+            }
+        </script>
+    </div>
+
+</div>
+<div th:replace="admin/module/_footer"></div>

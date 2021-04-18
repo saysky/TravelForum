@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div th:replace="home/module/_header"></div>
+
+    <main id="tt-pageContent" data-page="1" data-type="new" class="tt-offset-small">
+        <div class="container">
+            <div class="tt-layout-404">
+           <span class="tt-icon">
+                <svg class="icon">
+                  <use xlink:href="#icon-error_404"></use>
+                </svg>
+           </span>
+                <h6 class="tt-title">ERROR 500</h6>
+                <p>抱歉，系统出现错误，请稍后再试<br>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="home/module/_footer"></div>

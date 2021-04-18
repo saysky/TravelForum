@@ -1,0 +1,172 @@
+<div th:replace="admin/module/_header"></div>
+<div class="wrapper">
+    <!-- 菜单栏模块 -->
+    <div th:replace="admin/module/_sidebar"></div>
+    <div class="content-wrapper">
+        <style type="text/css" rel="stylesheet">
+            .label {
+                background-color: #d6cdcd;
+            }
+
+            .box-body {
+                padding: 0;
+            }
+
+            .box {
+                border-top: 0;
+            }
+        </style>
+        <section class="content-header">
+            <h1 style="display: inline-block;">回帖管理</h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a data-pjax="true" href="/admin">
+                        <i class="fa fa-dashboard"></i> 首页</a>
+                </li>
+                <li><a data-pjax="true" href="#">回帖管理</a></li>
+                <li class="active">回帖列表</li>
+            </ol>
+        </section>
+        <section class="content container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-md-4 col-xs-12" style="margin-bottom: 10px;padding-left: 0;">
+                        <button type="button" class="btn btn-danger" onclick="batchDelete()">
+                            <i class="fa fa-remove"></i> 批量删除
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-body table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="allSelect" onclick="doCheck()"></th>
+                                    <th class="col-md-1">回帖者</th>
+                                    <th class="col-md-2">帖子</th>
+                                    <th class="col-md-3">回帖内容摘要</th>
+                                    <th class="col-md-1">支持数</th>
+                                    <th class="col-md-1">反对数</th>
+                                    <th class="col-md-2">日期</th>
+                                    <th class="col-md-1">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:id="'answer-'+${answer.id}" th:each="answer : ${answers}">
+                                    <td><input type="checkbox" name="ids" th:value="${answer.id}"></td>
+                                    <td><a th:href="'/user/'+${answer.user.id}" target="_blank">[[${answer.user.userDisplayName}]]</a></td>
+                                    <td>
+                                        <a th:href="'/question/'+${answer.questionId}+'#answer'+${answer.id}"
+                                           target="_blank">
+                                            [[${answer.question.title}]]
+                                        </a>
+                                    </td>
+                                    <td th:title="${answer.content}">
+                                        [[${answer.summary}]]...
+                                    </td>
+                                    <td>
+                                        <span class="label">[[${answer.likeCount}]]</span>
+                                    </td>
+                                    <td>
+                                        <span class="label">[[${answer.dislikeCount}]]</span>
+                                    </td>
+                                    <td th:text="${#dates.format(answer.createTime,'yyyy-MM-dd HH:mm')}"></td>
+
+                                    <td>
+                                        <button class="btn btn-danger btn-xs " th:onclick="'removeIt('+${answer.id}+')'">删除</button>
+                                    </td>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-footer clearfix">
+                            <div class="no-margin pull-left">
+                                第 [[${pageInfo.current}]] / [[${pageInfo.pages}]] 页
+                            </div>
+                            <ul class="pagination no-margin pull-right">
+                                <li><a data-pjax="true" th:classappend="${pageInfo.current == 1 ? 'disabled' : ''}"
+                                       class="btn btn-sm"
+                                       href="/admin/answer">
+                                    首页
+                                </a>
+                                </li>
+                                <li><a data-pjax="true" class="btn btn-sm"
+                                       th:classappend="${pageInfo.current == 1 ? 'disabled' : ''}"
+                                       th:href="'/admin/answer?page='+${pageInfo.current-1}">
+                                    上一页
+                                </a>
+                                </li>
+                                <li><a data-pjax="true" class="btn btn-sm"
+                                       th:classappend="${pageInfo.current == pageInfo.pages ? 'disabled' : ''}"
+                                       th:href="'/admin/answer?page='+${pageInfo.current+1}">
+                                    下一页
+                                </a>
+                                </li>
+                                <li><a data-pjax="true" class="btn btn-sm"
+                                       th:classappend="${pageInfo.current == pageInfo.pages ? 'disabled' : ''}"
+                                       th:href="'/admin/answer?page='+${pageInfo.pages}">
+                                    尾页
+                                </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+
+            function removeIt(id) {
+                layer.confirm('请确认是否删除', function (index) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: '/admin/answer/delete',
+                        async: false,
+                        data: {
+                            'id': id
+                        },
+                        success: function (data) {
+                            if (data.code == 0) {
+                                showMsg(data.msg, "error", 1000);
+                            } else {
+                                showMsgAndReload(data.msg, "success", 2000);
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+
+
+            function batchDelete() {
+                var arr = [];
+                $('input[name="ids"]:checked').each(function () {
+                    arr.push($(this).val());
+                });
+                if (arr.length <= 0) {
+                    showMsg('请选择需要删除的数据', "error", 1000);
+                } else {
+                    layer.confirm('请确认是否删除', function (index) {
+                        $.ajax({
+                            url: "/admin/answer/batchDelete?ids=" + arr,
+                            type: "DELETE",
+                            success: function (data) {
+                                if (data.code == 0) {
+                                    showMsg(data.msg, "error", 1000);
+                                } else {
+                                    showMsgAndReload(data.msg, "success", 2000);
+                                }
+                            }
+                        });
+                        layer.close(index);
+                    });
+                }
+            }
+        </script>
+    </div>
+</div>
+<div th:replace="admin/module/_footer"></div>

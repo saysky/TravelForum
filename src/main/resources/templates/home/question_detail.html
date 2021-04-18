@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div th:replace="home/module/_header"></div>
+
+
+    <main id="tt-pageContent">
+        <div class="container">
+            <div class="tt-single-topic-list">
+                <div class="tt-item">
+                    <div class="tt-single-topic">
+                        <div class="tt-item-header">
+                            <div class="tt-item-info info-top">
+                                <div class="tt-avatar-icon">
+                                    <a th:href="'/user/'+${user.id}">
+                                        <img th:src="${user.userAvatar}" class="avatar" alt="">
+                                    </a>
+                                </div>
+                                <div class="tt-avatar-title">
+                                    <a th:href="'/user/'+${user.id}">[[${user.userDisplayName}]]</a>
+                                </div>
+                                <a href="#" class="tt-info-time">
+                                    <i class="tt-icon">
+                                        <svg>
+                                            <use xlink:href="#icon-time"></use>
+                                        </svg>
+                                    </i>[[${question.createTimeStr}]]
+                                </a>
+                            </div>
+                            <h3 class="tt-item-title">
+                                <a href="#">[[${question.title}]]</a>
+                            </h3>
+                        </div>
+                        <div class="tt-item-description" th:utext="${question.content}">
+
+                        </div>
+
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+                <div class="tt-item">
+                    <div class="tt-info-box" id="tt-info-box">
+                        <h6 class="tt-title">统计信息</h6>
+                        <div class="tt-row-icon">
+                            <div class="tt-item">
+                                <a href="javascript:void(0)" class="tt-icon-btn tt-position-bottom" title="回帖">
+                                    <i class="tt-icon">
+                                        <svg>
+                                            <use xlink:href="#icon-view"></use>
+                                        </svg>
+                                    </i>
+                                    <span class="tt-text">[[${question.viewCount}]]</span>
+
+                                </a>
+                            </div>
+                            <div class="tt-item">
+                                <a href="javascript:void(0)" th:data-id="${question.id}" title="喜欢"
+                                   class="tt-icon-btn tt-position-bottom question-like">
+                                    <i class="tt-icon">
+                                        <svg>
+                                            <use xlink:href="#icon-like"></use>
+                                        </svg>
+                                    </i>
+                                    <span class="tt-text">[[${question.likeCount}]]</span>
+                                </a>
+                            </div>
+                            <div class="tt-item">
+                                <a href="javascript:void(0)" th:data-id="${question.id}" title="收藏"
+                                   class="tt-icon-btn tt-position-bottom question-mark">
+                                    <i class="tt-icon">
+                                        <svg>
+                                            <use xlink:href="#icon-favorite"></use>
+                                        </svg>
+                                    </i>
+                                    <span class="tt-text">[[${question.markCount}]]</span>
+                                </a>
+                            </div>
+                            <div class="tt-item">
+                                <a href="#commentForm" class="tt-icon-btn tt-position-bottom" title="回帖">
+                                    <i class="tt-icon">
+                                        <svg>
+                                            <use xlink:href="#icon-reply"></use>
+                                        </svg>
+
+                                    </i>
+                                    <span class="tt-text">[[${question.answerCount}]]</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <shiro:guest>
+                    <div class="tt-topic-list">
+                        <div class="tt-item tt-item-popup">
+                            <div class="tt-col-avatar">
+                                <img th:src="${staticCdnUrl+'/static/images/notlogin.jpeg'}" class="avatar" alt="">
+                            </div>
+                            <div class="tt-col-message">
+                                检测到您未登录，需要先登录才能回帖帖子哦！
+                            </div>
+                            <div class="tt-col-btn">
+                                <a type="button" href="/login" class="btn btn-primary">登录</a>
+                                <a type="button" href="/register" class="btn btn-secondary">注册</a>
+                            </div>
+                        </div>
+                    </div>
+                </shiro:guest>
+                <shiro:user>
+                    <div class="pt-editor form-default" id="answer">
+                        <form id="answerForm" itemid="answer-form">
+                            <h6 class="pt-title">我要回帖</h6>
+                            <div class="form-group">
+                                <input type="hidden" name="id" id="questionId" th:value="${question.id}">
+                                <input type="hidden" name="answerId" id="answerId">
+                                <textarea name="content" id="content" class="form-control" rows="5"
+                                          placeholder="发表你的观点"></textarea>
+                            </div>
+                            <div class="pt-row">
+                                <div class="col-auto">
+                                    <a href="javascript:void(0)" id="answer-submit-btn"
+                                       class="btn btn-secondary btn-width-lg">提交回帖</a>
+                                    <a href="javascript:void(0)" id="answer-cancel-btn" style="display: none;"
+                                       class="btn btn btn-primary btn-width-lg">取消回帖</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </shiro:user>
+                <div class="tt-item" th:each="answer : ${answers}" th:id="${'answer'+answer.id}">
+                    <div class="tt-single-topic">
+                        <div class="tt-item-header pt-noborder">
+                            <div class="tt-item-info info-top">
+                                <div class="tt-avatar-icon">
+                                    <a th:href="'/user/'+${answer.userId}">
+                                        <img th:src="${answer.user.userAvatar}" class="avatar" alt="">
+                                    </a>
+                                </div>
+                                <div class="tt-avatar-title">
+                                    <a th:href="'/user/'+${answer.userId}" th:id="'answer-'+${answer.id}+'-user'">[[${answer.user.userDisplayName}]]</a>
+                                </div>
+                                <a href="#" class="tt-info-time">
+                                    <i class="tt-icon">
+                                        <svg>
+                                            <use xlink:href="#icon-time"></use>
+                                        </svg>
+                                    </i>[[${answer.createTimeStr}]]
+                                </a>
+                            </div>
+                        </div>
+                        <div class="tt-item-description">
+                            <div th:utext="${answer.content}"></div>
+
+                            <div class="topic-inner-list" style="max-height: 500px; overflow: scroll;">
+                                <div class="topic-inner" th:each="comment : ${answer.commentList}">
+                                    <div class="topic-inner-title">
+                                        <div class="topic-inner-avatar">
+                                            <a th:href="'/user/'+${comment.userId}">
+                                                <img th:src="${comment.user.userAvatar}"
+                                                     th:id="'comment-'+${comment.id}+'-user'"
+                                                     class="avatar" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="topic-inner-title"><a th:href="'/user/'+${comment.userId}">[[${comment.user.userDisplayName}]]</a>
+                                        </div>
+                                    </div>
+                                    <div class="topic-inner-description" th:utext="${comment.commentContent}"
+                                         th:title="${comment.createTimeStr}">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tt-item-info info-bottom">
+                            <a href="javascript:void(0)" th:data-id="${answer.id}" class="tt-icon-btn answer-like">
+                                <i class="tt-icon">
+                                    <svg>
+                                        <use xlink:href="#icon-like"></use>
+                                    </svg>
+                                </i>
+                                <span class="tt-text">[[${answer.likeCount}]]</span>
+                            </a>
+                            <a href="javascript:void(0)" th:data-id="${answer.id}" class="tt-icon-btn answer-dislike">
+                                <i class="tt-icon">
+                                    <svg>
+                                        <use xlink:href="#icon-dislike"></use>
+                                    </svg>
+                                </i>
+                                <span class="tt-text">[[${answer.dislikeCount}]]</span>
+                            </a>
+
+                            <a href="#answer" th:data-id="${answer.id}"
+                               class="tt-icon-btn tt-hover-02 tt-small-indent reply-answer-btn">
+                                <i class="tt-icon">
+                                    <svg>
+                                        <use xlink:href="#icon-reply"></use>
+                                    </svg>
+                                </i>
+                                <span class="tt-text">[[${answer.commentCount}]]</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:replace="home/module/_page"></div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <div th:replace="home/module/_footer"></div>
+
+

@@ -1,0 +1,156 @@
+<div th:replace="admin/module/_header"></div>
+<div class="wrapper">
+    <!-- 菜单栏模块 -->
+    <div th:replace="admin/module/_sidebar"></div>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1 style="display: inline-block;">首页</h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a data-pjax="true" href="/admin">
+                        <i class="fa fa-dashboard"></i> 首页</a>
+                </li>
+            </ol>
+        </section>
+        <section class="content container-fluid">
+            <div class="row">
+
+                <div class="col-xs-12" style="font-size: 1.2em;margin-bottom: 20px;">
+                    欢迎访问旅游日记交流平台后台
+                </div>
+
+                <div class="col-xs-12" style="font-size: 1.2em;">
+                    您的角色：[[${role.description}]] <br>
+                    注册时间： <span th:text="${#dates.format(user.createTime,'yyyy年MM月dd日 HH时mm分')}"></span><br>
+                    上次登录时间：<span th:text="${#dates.format(user.loginLast,'yyyy年MM月dd日 HH时mm分')}"></span><br>
+                    <br>
+                </div>
+
+<!--                <div class="col-xs-12" style="margin-top: 10px;">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-lg-3 col-xs-6">-->
+<!--                            <div class="small-box bg-green">-->
+<!--                                <div class="inner">-->
+<!--                                    <h3>[[${postTotal}]]</h3>-->
+<!--                                    <p>文章总数</p>-->
+<!--                                </div>-->
+<!--                                <div class="icon"><i class="ion ion-bag"></i></div>-->
+<!--                                <a data-pjax="true" href="/admin/post" class="small-box-footer">快速查看<i-->
+<!--                                        class="fa fa-arrow-circle-right"></i></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-3 col-xs-6">-->
+<!--                            <div class="small-box bg-yellow">-->
+<!--                                <div class="inner">-->
+<!--                                    <h3>[[${questionTotal}]]</h3>-->
+<!--                                    <p>帖子总数</p>-->
+<!--                                </div>-->
+<!--                                <div class="icon"><i class="ion ion-bag"></i></div>-->
+<!--                                <a data-pjax="true" href="/admin/post" class="small-box-footer">快速查看<i-->
+<!--                                        class="fa fa-arrow-circle-right"></i></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-3 col-xs-6">-->
+<!--                            <div class="small-box bg-red">-->
+<!--                                <div class="inner">-->
+<!--                                    <h3>[[${answerTotal}]]</h3>-->
+<!--                                    <p>回帖总数</p>-->
+<!--                                </div>-->
+<!--                                <div class="icon"><i class="ion ion-bag"></i></div>-->
+<!--                                <a data-pjax="true" href="/admin/post" class="small-box-footer">快速查看<i-->
+<!--                                        class="fa fa-arrow-circle-right"></i></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-3 col-xs-6">-->
+<!--                            <div class="small-box bg-maroon">-->
+<!--                                <div class="inner">-->
+<!--                                    <h3>[[${userTotal}]]</h3>-->
+<!--                                    <p>用户总数</p>-->
+<!--                                </div>-->
+<!--                                <div class="icon"><i class="ion ion-bag"></i></div>-->
+<!--                                <a data-pjax="true" href="/admin/post" class="small-box-footer">快速查看<i-->
+<!--                                        class="fa fa-arrow-circle-right"></i></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+
+            </div>
+        </section>
+
+
+    </div>
+    <script>
+
+        function apply() {
+            layer.confirm('您需要上传相关证件进行审核，是否上传', function (index) {
+                $('#file').click();
+                layer.close(index);
+            });
+        }
+
+        $('body').on('change', '#file', function () {
+            var formData = new FormData();
+            var files = $($(this))[0].files[0];
+            formData.append("file", files);
+            $.ajax({
+                url: '/admin/file/upload',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res);
+                    sendApply(res.link);
+                }
+                , error: function (res) {
+                }
+            });
+        });
+
+        function sendApply(document) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/apply/send',
+                async: false,
+                data: {
+                    'document': document
+                },
+                success: function (data) {
+                    if (data.code == 0) {
+                        showMsg(data.msg, "error", 1000);
+                    } else {
+                        showMsgAndReload(data.msg, "success", 2000);
+                    }
+                }
+            });
+        }
+
+        function removeIt(id) {
+            layer.confirm('请确认是否取消申请', function (index) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/admin/apply/delete',
+                    async: false,
+                    data: {
+                        'id': id
+                    },
+                    success: function (data) {
+                        if (data.code == 0) {
+                            showMsg(data.msg, "error", 1000);
+                        } else {
+                            showMsgAndReload(data.msg, "success", 2000);
+                        }
+                    }
+                });
+                layer.close(index);
+            });
+        }
+    </script>
+</div>
+</div>
+<div th:replace="admin/module/_footer"></div>
+

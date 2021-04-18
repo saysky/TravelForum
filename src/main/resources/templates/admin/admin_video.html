@@ -1,0 +1,129 @@
+<div th:replace="admin/module/_header"></div>
+<div class="wrapper">
+    <!-- 菜单栏模块 -->
+    <div th:replace="admin/module/_sidebar"></div>
+    <div class="content-wrapper">
+        <style type="text/css" rel="stylesheet">
+            .box-body {
+                padding: 0;
+            }
+
+            .box {
+                border-top: 0;
+            }
+        </style>
+        <section class="content-header">
+            <h1 style="display: inline-block;">视频管理</h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a data-pjax="true" href="/admin">
+                        <i class="fa fa-dashboard"></i> 首页</a>
+                </li>
+                <li><a data-pjax="true" href="#">视频管理</a></li>
+                <li class="active">视频列表</li>
+            </ol>
+        </section>
+        <section class="content container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-body table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="col-md-1"><input type="checkbox" id="allSelect" onclick="doCheck()"></th>
+                                    <th class="col-md-2">作者</th>
+                                    <th class="col-md-5">标题</th>
+                                    <th class="col-md-2">日期</th>
+                                    <th class="col-md-2">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:id="'video-'+${video.id}" th:each="video : ${videoList}">
+                                    <td><input type="checkbox" name="ids" th:value="${video.id}"></td>
+                                    <td>
+                                        <a th:href="'/user/'+${video.user.id}" target="_blank">
+                                            [[${video.user.userDisplayName}]]
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a th:href="'/video/'+${video.id}" target="_blank">[[${video.title}]]</a>
+                                    </td>
+                                    <td th:text="${#dates.format(video.createTime,'yyyy-MM-dd HH:mm')}"></td>
+                                    <td>
+                                        <a th:href="'/video/'+${video.id}" class="btn btn-primary btn-xs"
+                                           target="_blank">查看</a>
+                                        <a th:href="'/admin/video/edit?id='+${video.id}"
+                                           class="btn btn-info btn-xs ">编辑</a>
+                                        <button class="btn btn-danger btn-xs " th:onclick="'deleteIt('+${video.id}+')'">
+                                            删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-footer clearfix">
+                            <div class="no-margin pull-left">
+                                第 [[${pageInfo.current}]] / [[${pageInfo.pages}]] 页
+                            </div>
+                            <ul class="pagination no-margin pull-right">
+                                <li><a data-pjax="true" th:classappend="${pageInfo.current == 1 ? 'disabled' : ''}"
+                                       class="btn btn-sm"
+                                       th:href="'/admin/video?sort='+${sort}+'&order='+${order}">
+                                    首页
+                                </a>
+                                </li>
+                                <li><a data-pjax="true" class="btn btn-sm"
+                                       th:classappend="${pageInfo.current == 1 ? 'disabled' : ''}"
+                                       th:href="'/admin/video?page='+${pageInfo.current-1}+'&sort='+${sort}+'&order='+${order}">
+                                    上一页
+                                </a>
+                                </li>
+                                <li><a data-pjax="true" class="btn btn-sm"
+                                       th:classappend="${pageInfo.current == pageInfo.pages ? 'disabled' : ''}"
+                                       th:href="'/admin/video?page='+${pageInfo.current+1}+'&sort='+${sort}+'&order='+${order}">
+                                    下一页
+                                </a>
+                                </li>
+                                <li><a data-pjax="true" class="btn btn-sm"
+                                       th:classappend="${pageInfo.current == pageInfo.pages ? 'disabled' : ''}"
+                                       th:href="'/admin/video?page='+${pageInfo.pages}+'&sort='+${sort}+'&order='+${order}">
+                                    尾页
+                                </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+
+            function deleteIt(id) {
+                layer.confirm('请确认是否删除', function (index) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: '/admin/video/delete',
+                        async: false,
+                        data: {
+                            'id': id
+                        },
+                        success: function (data) {
+                            if (data.code == 0) {
+                                showMsg(data.msg, "error", 1000);
+                            } else {
+                                showMsgAndReload(data.msg, "success", 2000);
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+
+
+        </script>
+    </div>
+</div>
+<div th:replace="admin/module/_footer"></div>

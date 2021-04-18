@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>旅游日记交流平台 | 登录</title>
+        <meta name="keywords" content="HTML5 Template">
+        <meta name="description" content="Forum - Responsive HTML5 Template">
+        <meta name="author" content="Forum">
+        <link rel="shortcut icon" th:href="${staticCdnUrl+'/static/front/favicon/favicon.ico'}">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" th:href="${staticCdnUrl+'/static/front/css/style.css'}">
+        <link rel="stylesheet" th:href="${staticCdnUrl+'/static/front/css/style.css'}">
+        <link rel="stylesheet" th:href="${staticCdnUrl+'/static/front/css/main.css'}">
+        <link rel="stylesheet" th:href="${staticCdnUrl+'/static/plugins/toast/css/jquery.toast.min.css'}">
+    </head>
+    <body>
+        <!-- tt-mobile menu -->
+        <nav class="panel-menu" id="mobile-menu">
+            <ul>
+
+            </ul>
+            <div class="mm-navbtn-names">
+                <div class="mm-closebtn">
+                    Close
+                    <div class="tt-icon">
+                        <svg>
+                            <use xlink:href="#icon-cancel"></use>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mm-backbtn">Back</div>
+            </div>
+        </nav>
+        <main id="tt-pageContent" class="tt-offset-none">
+            <div class="container">
+                <div class="tt-loginpages-wrapper">
+                    <div class="tt-loginpages">
+                        <a href="/" class="tt-block-title">
+<!--                            <img th:src="${staticCdnUrl+'/static/front/images/logo.jpeg'}" class="avatar" alt="">-->
+                            <div class="tt-title">
+                                欢迎访问旅游日记交流平台
+                            </div>
+                            <div class="tt-description">
+                                用户登录
+                            </div>
+                        </a>
+                        <form class="form-default">
+                            <div class="form-group">
+                                <label for="userName">用户名或电子邮箱</label>
+                                <input type="text" name="userName" class="form-control" id="userName">
+                            </div>
+                            <div class="form-group">
+                                <label for="userPass">密码</label>
+                                <input type="password" name="userPass" class="form-control" id="userPass">
+                            </div>
+                            <div class="form-group has-feedback">
+                                <input type="text" class="form-control pull-left margin-r-5" name="kaptcha" id="kaptcha"
+                                       style="width: 50%;"
+                                       placeholder="验证码">
+                                <img th:src="@{/getKaptchaImage}" width="80" height="34"
+                                     class="captcha changeCaptcha pull-left margin-r-5" alt="验证码"/>
+                                <a href="javascript:void(0)" class="changeCaptcha">换一张</a>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="rememberMe" name="checkbox" checked>
+                                            <label for="rememberMe">
+                                                <span class="check"></span>
+                                                <span class="box"></span>
+                                                <span class="tt-text">记住我</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <a href="#" id="btn-login" class="btn btn-secondary btn-block">登录</a>
+                            </div>
+                            <p><a href="/register" class="tt-underline">注册</a> | <a href="/forget" class="tt-underline">忘记密码</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script th:src="${staticCdnUrl+'/static/front/js/bundle.js'}"></script>
+        <script th:src="${staticCdnUrl+'/static/plugins/toast/js/jquery.toast.min.js'}"></script>
+        <script th:src="${staticCdnUrl+'/static/js/app.js'}"></script>
+        <script th:src="${staticCdnUrl+'/static/js/login.js'}"></script>
+    </body>
+</html>

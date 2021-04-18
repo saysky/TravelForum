@@ -1,0 +1,133 @@
+<ul class="pagination justify-content-center" th:if="${page.pages == 0}">
+    暂无数据
+</ul>
+<ul class="pagination justify-content-center" th:if="${page.pages > 1 && page.pages <= 7}"
+    style="float: right;">
+    <!-- 上一页 -->
+    <li class="page-item" th:if="${page.current > 1}">
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${page.current - 1})}">
+            上一页
+        </a>
+    </li>
+
+    <li class="page-item"
+        th:classappend="${(page.current) eq i} ? 'active' : ''"
+        th:each="i : ${#numbers.sequence(1, page.pages)}">
+        <!-- 当前页面小于等于4 -->
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${i})}">
+            [[${i}]]
+        </a>
+    </li>
+
+    <li class="page-item" th:unless="${page.current == page.pages}">
+        <!-- 下一页 -->
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${page.current+1})}">
+            下一页
+        </a>
+    </li>
+
+</ul>
+<ul class="pagination justify-content-center" th:if="${page.pages > 7}"
+    style="float: right;">
+    <!-- 上一页 -->
+    <li class="page-item" th:if="${page.current > 1}">
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${page.current - 1})}">
+            上一页
+        </a>
+    </li>
+
+    <li class="page-item" th:classappend="${(page.current) eq 1} ? 'active' : ''">
+        <a class="page-link" th:href="@{?page=1}">
+            1
+        </a>
+    </li>
+
+    <li class="page-item" th:if="${(page.current) le 4}"
+        th:classappend="${(page.current) eq i} ? 'active' : ''"
+        th:each="i : ${#numbers.sequence(2,5)}">
+        <!-- 当前页面小于等于4 -->
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${i})}">
+            [[${i}]]
+        </a>
+    </li>
+
+    <li class="page-item" th:if="${(page.current) le 4}">
+        <a href="javascript:void(0)" class="page-link">&hellip;</a>
+    </li>
+
+    <li class="page-item" th:if="${(page.pages-(page.current)) le 3}">
+        <a href="javascript:void(0)" class="page-link">&hellip;</a>
+    </li>
+
+
+    <li class="page-item" th:if="${(page.pages-(page.current)) le 3}"
+        th:classappend="${(page.current) eq i} ? 'active' : ''"
+        th:each="i : ${#numbers.sequence(page.pages-4, page.pages-1)}">
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${i})}">
+            [[${i}]]
+        </a>
+    </li>
+
+    <li class="page-item"
+        th:if="${((page.current) gt 4) && ((page.pages-(page.current)) gt 3 )}">
+        <a href="javascript:void(0)" class="page-link">&hellip;</a>
+    </li>
+
+
+    <li class="page-item"
+        th:if="${((page.current) gt 4) && ((page.pages-(page.current)) gt 3 )}"
+        th:classappend="${(page.current) eq (page.current)} ? 'active' : ''">
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${page.current+1})}">
+            [[${page.current}]]
+        </a>
+    </li>
+
+    <li class="page-item"
+        th:if="${((page.current) gt 4) && ((page.pages-(page.current)) gt 3 )}">
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${page.current+1})}">
+            [[${page.current+1}]]
+        </a>
+    </li>
+
+
+    <li class="page-item"
+        th:if="${((page.current) gt 4) && ((page.pages-(page.current)) gt 3 )}">
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${page.current+2})}">
+            [[${page.current+2}]]
+        </a>
+    </li>
+
+
+    <li class="page-item"
+        th:if="${((page.current) gt 4) && ((page.pages-(page.current)) gt 3 )}">
+        <a href="javascript:void(0)" class="page-link">&hellip;</a>
+    </li>
+
+    <li class="page-item"
+        th:classappend="${(page.current) eq page.pages} ? 'active' : ''">
+        <!-- 最后一页 -->
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${page.pages})}">
+            [[${page.pages}]]
+        </a>
+    </li>
+
+
+    <li class="page-item" th:unless="${page.current == page.pages}">
+        <!-- 下一页 -->
+        <a class="page-link"
+           th:href="@{?page={page}&sort={sort}(sort=${param.sort}, page=${page.current+1})}">
+            下一页
+        </a>
+    </li>
+
+</ul>
