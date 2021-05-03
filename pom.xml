@@ -5,11 +5,11 @@
     <groupId>com.example</groupId>
     <artifactId>TravelForum</artifactId>
     <version>1.0.0</version>
-    <name>TravelForum</name>
+    <name>NewTravelForum</name>
 
 
     <description>
-        基于SpringBoot的旅游日记交流平台
+        基于SpringBoot的旅游信息发布平台
     </description>
 
     <developers>
@@ -192,6 +192,14 @@
             <version>2.3.2</version>
         </dependency>
 
+
+        <!-- 图片操作 -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.8</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>
@@ -209,7 +217,7 @@
     </pluginRepositories>
 
     <build>
-        <finalName>TravelForum</finalName>
+        <finalName>NewTravelForum</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
