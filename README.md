@@ -1,3 +1,7 @@
+## 博主开发的其他论坛或博客项目全部在这里
+**[https://liuyanzhao.com/shop.html?k=论坛](https://liuyanzhao.com/shop.html?k=论坛)** <br/>
+**[https://liuyanzhao.com/shop.html?k=博客](https://liuyanzhao.com/shop.html?k=博客)**   <br/>
+- -------------------------------------------------------------------------------
 - 基于SpringBoot的旅游交流论坛
 - 预览地址：[http://travel.liuyanzhao.com](http://travel.liuyanzhao.com)
 - 详细介绍地址：[https://liuyanzhao.com/shop/TravelForum.html](https://liuyanzhao.com/shop/TravelForum.html)
