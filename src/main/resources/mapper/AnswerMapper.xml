@@ -10,4 +10,3 @@
             t.id = #{value}
             AND del_flag = 0
     </update>
-</mapper>
